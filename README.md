@@ -47,4 +47,4 @@ node test/calc.test.js
 
 ## License
 
-MIT. The menu is Omarchy's, copyright Basecamp, LLC.
+MIT. The menu is Omarchy's, copyright David Heinemeier Hansson.
