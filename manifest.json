@@ -2,9 +2,9 @@
   "schemaVersion": 1,
   "id": "z19r.menu-calc",
   "name": "Menu with calculator",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "z19r",
-  "description": "The Omarchy menu, plus instant math: type 2+2 into the search and press Enter to copy the result",
+  "description": "The Omarchy menu, plus instant math and unit conversion: type 2+2 or 5 ft to m into the search and press Enter to copy the result",
   "kinds": [
     "menu",
     "bar-widget"

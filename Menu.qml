@@ -21,6 +21,8 @@ Item {
   // `omarchy-shell shell summon omarchy.menu ...` and close() when hidden.
   property string pendingInitialMenu: "root"
 
+  Commons.Translations { id: calcStrings; directory: Qt.resolvedUrl("i18n") }
+
   function open(payloadJson) {
     var payload = ({})
     try { payload = JSON.parse(payloadJson || "{}") } catch (e) { payload = ({}) }
@@ -775,15 +777,16 @@ Item {
       }
       rows = currentRows.concat(drilldownRows)
 
-      // Calculator: a search that is arithmetic gets its answer as the first
-      // row, and Enter copies it. The result is only digits, ".", "e", "+"
-      // and "-", so it is safe to hand to the shell unquoted.
+      // Calculator: a search that is a calculation gets its answer as the
+      // first row, and Enter copies the number. The answer's first word is
+      // only digits, ".", "e", "+" and "-", so it is safe to hand to the
+      // shell unquoted; a converted unit after it is shown but not copied.
       var answer = Calc.evaluate(query)
       if (answer) {
         rows.unshift({
           itemId: "calc.result", disabled: false, kind: "action", icon: "\uDB80\uDCEC", iconFont: "",
-          appIcon: "", appId: "", label: "= " + answer, target: "", detail: "", path: "", childCount: 0,
-          action: "wl-copy -- " + answer, provider: "", score: -1, section: ""
+          appIcon: "", appId: "", label: "= " + answer, target: "", detail: calcStrings.t("calc.copy"), path: "", childCount: 0,
+          action: "wl-copy -- " + answer.split(" ")[0], provider: "", score: -1, section: ""
         })
       }
     } else {
