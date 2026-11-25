@@ -1,4 +1,4 @@
-# Menu with calculator
+# Omarculator
 
 The Omarchy menu, plus the instant math Omarchy 3's launcher had. Press
 Super+Space, type a sum, and the answer is the first row. Enter copies it.
@@ -26,7 +26,7 @@ bare number or name such as `42` or `pi`.
 ## Install
 
 ```bash
-omarchy plugin add https://github.com/z19r/omarchy-menu-calc --enable
+omarchy plugin add https://github.com/z19r/omarculator --enable
 omarchy restart shell
 ```
 
@@ -36,7 +36,7 @@ updating for the new version to take effect.
 ## Remove
 
 ```bash
-omarchy plugin remove z19r.menu-calc
+omarchy plugin remove z19r.omarculator
 ```
 
 Removing it brings the built-in menu back.

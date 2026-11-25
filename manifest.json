@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "id": "z19r.menu-calc",
-  "name": "Menu with calculator",
+  "id": "z19r.omarculator",
+  "name": "Omarculator",
   "version": "1.1.0",
   "author": "z19r",
   "description": "The Omarchy menu, plus instant math and unit conversion: type 2+2 or 5 ft to m into the search and press Enter to copy the result",
@@ -15,7 +15,7 @@
     "barWidget": "BarWidget.qml"
   },
   "barWidget": {
-    "displayName": "Menu with calculator",
+    "displayName": "Omarculator",
     "description": "Launches the Omarchy menu",
     "category": "Compositor",
     "allowMultiple": false
