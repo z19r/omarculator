@@ -1,0 +1,48 @@
+name: CI
+
+on:
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Calculator tests
+        run: node test/calc.test.js
+      - name: Manifest and translations are valid
+        run: |
+          jq -e '.id and .entryPoints and (.version | test("^[0-9]+\\.[0-9]+\\.[0-9]+$"))' manifest.json
+          for f in i18n/*.json; do jq -e . "$f" > /dev/null; done
+
+  # The manifest version is the release version: a PR that changes what ships
+  # must raise it (patch: fixes, minor: new features, major: breaking changes).
+  version:
+    name: version
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Version is bumped when plugin files change
+        env:
+          BASE: origin/${{ github.base_ref }}
+        run: |
+          base=$(git show "$BASE:manifest.json" | jq -r .version)
+          head=$(jq -r .version manifest.json)
+          changed=$(git diff --name-only "$BASE...HEAD" -- ':(glob)*.qml' ':(glob)*.js' i18n)
+          if [ -z "$changed" ]; then
+            echo "No plugin files changed, no bump needed (version $head)."
+            exit 0
+          fi
+          if [ "$head" = "$base" ] || [ "$(printf '%s\n%s\n' "$base" "$head" | sort -V | tail -1)" != "$head" ]; then
+            echo "::error file=manifest.json::Plugin files changed: $(echo "$changed" | tr "\n" " "). Raise \"version\" above $base in manifest.json: patch for fixes, minor for new features, major for breaking changes."
+            exit 1
+          fi
+          echo "Version $base -> $head"

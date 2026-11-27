@@ -65,6 +65,20 @@ written.
 node test/calc.test.js
 ```
 
+## Releasing
+
+`version` in `manifest.json` is the release version. A pull request that
+changes the plugin (`*.qml`, `*.js`, `i18n/`) must raise it, and CI fails
+until it does:
+
+- patch (`1.1.0` → `1.1.1`): fixes, nothing new to learn
+- minor (`1.1.0` → `1.2.0`): new things you can type or do
+- major (`1.1.0` → `2.0.0`): something that worked stops working
+
+Merging to `main` tags `v<version>`, publishes a GitHub release with the
+plugin zipped, and attests the zip's build provenance. Check a download with
+`gh attestation verify omarculator-v1.1.0.zip --repo z19r/omarculator`.
+
 ## License
 
 MIT. The menu is Omarchy's, copyright David Heinemeier Hansson.
