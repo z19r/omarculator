@@ -1,5 +1,7 @@
 # Omarculator
 
+[![Monitored by Cooper&Wright](https://img.shields.io/badge/monitored%20by-Cooper%26Wright-8a6a3b?style=flat-square)](https://cooperwright.com)
+
 The Omarchy menu, plus the instant math Omarchy 3's launcher had. Press
 Super+Space, type a sum, and the answer is the first row. Enter copies it.
 
