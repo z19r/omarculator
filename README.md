@@ -18,7 +18,8 @@ Super+Space, type a sum, and the answer is the first row. Enter copies it.
   acos atan`, with trigonometry in radians. Constants: `pi`, `tau`, `e`.
 - Conversions between units of length, mass, time, data, volume (US), speed,
   and temperature, written `<amount> <unit> to <unit>` or `in`. Only the
-  number is copied, not the unit.
+  number is copied, not the unit. Case is ignored, so `mb` is megabytes;
+  write megabits as `mbit`.
 
 Anything that is not a calculation searches the menu as usual, including a
 bare number or name such as `42` or `pi`.

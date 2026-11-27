@@ -7,8 +7,9 @@
 //   conversions  5 ft to m, 72 f in c, 1.5 hours to min
 
 function trig(fn) {
-  // sin(pi) is 1.2e-16 in floating point; 15 decimals makes it the 0 it should be.
-  return function(x) { return parseFloat(fn(x).toFixed(15)) }
+  // sin(pi) is 1.2e-16 in floating point; snap that to the 0 it should be,
+  // but keep real tiny answers like sin(1e-20).
+  return function(x) { var r = fn(x); return Math.abs(r) < 1e-15 && Math.abs(x) >= 1e-15 ? 0 : r }
 }
 
 var FUNCTIONS = {
@@ -30,7 +31,9 @@ var UNITS = {
           lb: 453.59237, pound: 453.59237, stone: 6350.29318, t: 1e6, tonne: 1e6 },
   time: { ms: 0.001, s: 1, sec: 1, second: 1, min: 60, minute: 60, h: 3600, hr: 3600, hour: 3600,
           d: 86400, day: 86400, wk: 604800, week: 604800, yr: 31557600, year: 31557600 },
+  // Typed text is lowercased, so "Mb" reads as megabytes; megabits are "mbit".
   data: { bit: 0.125, b: 1, byte: 1, kb: 1e3, mb: 1e6, gb: 1e9, tb: 1e12,
+          kbit: 125, mbit: 125000, gbit: 125000000,
           kib: 1024, mib: 1048576, gib: 1073741824, tib: 1099511627776 },
   volume: { ml: 0.001, l: 1, liter: 1, litre: 1, tsp: 0.00492892159375, tbsp: 0.01478676478125,
             floz: 0.0295735295625, cup: 0.2365882365, pt: 0.473176473, pint: 0.473176473,
@@ -59,11 +62,14 @@ function convert(value, from, to) {
   if (from.dimension !== to.dimension) return NaN
   if (from.dimension !== "temperature") return value * from.factor / to.factor
   var kelvin = from.scale === "c" ? value + 273.15 : from.scale === "f" ? (value - 32) * 5 / 9 + 273.15 : value
+  if (kelvin < 0) return NaN
   return to.scale === "c" ? kelvin - 273.15 : to.scale === "f" ? (kelvin - 273.15) * 9 / 5 + 32 : kelvin
 }
 
 // { value, operators } for an arithmetic expression, or null if it is not one.
 function compute(text) {
+  // "log 2(8)" would glue into log2(8); a name then a spaced number is not math.
+  if (/[a-z]\s+[\d.]/i.test(text)) return null
   var src = String(text || "").replace(/\s+/g, "").replace(/\*\*/g, "^")
   if (!src || src.length > 100 || !/^[0-9a-z.+\-*\/%^()]+$/.test(src)) return null
 
